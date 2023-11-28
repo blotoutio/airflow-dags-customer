@@ -36,7 +36,7 @@ dag = DAG(
         dag_id, default_args=default_args, is_paused_upon_creation=False, schedule_interval='0 5 * * *', catchup=False,
         tags=['Python-test'])
 
-task = PythonOperator(task_id='send_activation_notification',
+task = PythonOperator(task_id='test_callback',
                                   provide_context=True,
                                   python_callable=test_callback,
                                   dag=dag,
