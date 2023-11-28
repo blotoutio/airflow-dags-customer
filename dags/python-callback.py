@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from datetime import timedelta
 
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
@@ -14,7 +15,7 @@ ENV = os.environ.get("ENVIRONMENT")
 dag_id = 'python_callback'
 
 
-def test_callback(entity_type, tag_name):
+def test_callback(**kwargs):
         env = kwargs['ENV']
         print(env)
         logging.info(env)
@@ -25,8 +26,6 @@ default_args = {
     'email_on_failure': True,
     'retries': 1,
     'retry_delay': timedelta(minutes=5),
-    'start_date': f'{START_DATE}',
-    "on_failure_callback": email_template.notify_email,
     'ENV': ENV
 }
 
@@ -36,7 +35,7 @@ dag = DAG(
 
 task = PythonOperator(task_id='send_activation_notification',
                                   provide_context=True,
-                                  python_callable=send_activation_notification_bo,
+                                  python_callable=test_callback,
                                   dag=dag,
                                   op_kwargs={
                                       "ENV": ENV
