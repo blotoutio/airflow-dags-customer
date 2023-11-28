@@ -8,6 +8,7 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 from airflow.operators.python_operator import PythonOperator
 from airflow.models import Variable
 from airflow import DAG
+from airflow.utils.dates import days_ago
 
 
 ENV = os.environ.get("ENVIRONMENT")
@@ -23,9 +24,11 @@ def test_callback(**kwargs):
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'email_on_failure': True,
+    'email_on_failure': False,
+    'email_on_retry': False,
     'retries': 1,
     'retry_delay': timedelta(minutes=5),
+    'start_date': days_ago(1),
     'ENV': ENV
 }
 
