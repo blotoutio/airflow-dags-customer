@@ -9,6 +9,7 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.models import Variable
 from airflow import DAG
 from airflow.utils.dates import days_ago
+from common.base import params, session
 
 
 ENV = os.environ.get("ENVIRONMENT")
@@ -20,6 +21,31 @@ def test_callback(**kwargs):
         env = kwargs['ENV']
         print(env)
         logging.info(env)
+
+def get_data_form_athena():
+    try:
+        logger.debug(f'Get data from athena')
+        query = get_query(SCHEMA)
+        print(query)
+        logging.info(query)
+        query_executor = Athena.execute(query, params, session)
+        query_results_df = next(query_executor)
+        list = []
+        for index, row in dealer_query_results_df.iterrows():
+            print(row)
+            logging.info(row)
+        return
+    except ConnectionError as e:
+        logger.debug(f"ConnectionError : {str(e)}")
+    except Exception as e:
+        logger.debug(f"Exception : {str(e)}")
+
+def get_query(schema):
+    return \
+        f""" SELECT *
+            FROM {schema}.core_events
+            limit 10
+        """
 
 default_args = {
     'owner': 'airflow',
@@ -43,5 +69,13 @@ task = PythonOperator(task_id='test_callback',
                                   op_kwargs={
                                       "ENV": ENV
                                   })
+
+task1 = PythonOperator(task_id='test_callback',
+                                  provide_context=True,
+                                  python_callable=get_data_form_athena,
+                                  dag=dag
+                                  )
+
+task >> task1
 
 globals()[dag_id] = dag
