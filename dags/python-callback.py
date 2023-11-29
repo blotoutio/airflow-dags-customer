@@ -70,12 +70,12 @@ task = PythonOperator(task_id='test_callback',
                                       "ENV": ENV
                                   })
 
-task1 = PythonOperator(task_id='test_callback',
-                                  provide_context=True,
-                                  python_callable=get_data_form_athena,
-                                  dag=dag
-                                  )
-
-task >> task1
+# task1 = PythonOperator(task_id='test_callback',
+#                                   provide_context=True,
+#                                   python_callable=get_data_form_athena,
+#                                   dag=dag
+#                                   )
+#
+# task >> task1
 
 globals()[dag_id] = dag

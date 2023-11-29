@@ -3,7 +3,7 @@ import time
 
 import boto3
 import pandas as pd
-from smart_open import smart_open
+# from smart_open import smart_open
 
 from connectors.constant import ATHENA_RESULTS_BATCH_SIZE
 
@@ -61,8 +61,8 @@ def output_generator(s3_output_filename, params):
     bucket_name = params['bucket']
 
     path = 's3://{}:{}@{}/{}'.format(aws_key, aws_secret, bucket_name, object_key)
-    df = pd.read_csv(smart_open(path))
-    i = 0
-    while True and df.shape[0] >= i:
-        yield (df.iloc[i:i + ATHENA_RESULTS_BATCH_SIZE, :])
-        i = i + ATHENA_RESULTS_BATCH_SIZE
+#     df = pd.read_csv(smart_open(path))
+#     i = 0
+#     while True and df.shape[0] >= i:
+#         yield (df.iloc[i:i + ATHENA_RESULTS_BATCH_SIZE, :])
+#         i = i + ATHENA_RESULTS_BATCH_SIZE
