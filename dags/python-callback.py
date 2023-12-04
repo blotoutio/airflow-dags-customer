@@ -20,7 +20,10 @@ dag_id = 'python_callback'
 def test_callback(**kwargs):
         env = kwargs['ENV']
         print(env)
+        date = kwargs['LAST_EXECUTION_DATE']
+        print(date)
         logging.info(env)
+        logging.info(date)
 
 def get_data_form_athena():
     try:
@@ -67,7 +70,8 @@ task = PythonOperator(task_id='test_callback',
                                   python_callable=test_callback,
                                   dag=dag,
                                   op_kwargs={
-                                      "ENV": ENV
+                                      "ENV": ENV,
+                                      "LAST_EXECUTION_DATE" : {{ prev_execution_date_success }}
                                   })
 
 # task1 = PythonOperator(task_id='test_callback',
