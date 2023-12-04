@@ -71,7 +71,7 @@ task = PythonOperator(task_id='test_callback',
                                   dag=dag,
                                   op_kwargs={
                                       "ENV": ENV,
-                                      "LAST_EXECUTION_DATE" : "{{ prev_execution_date_success.int_timestamp }}"
+                                      "LAST_EXECUTION_DATE" : "{{ prev_execution_date_success }}"
                                   })
 
 # task1 = PythonOperator(task_id='test_callback',
