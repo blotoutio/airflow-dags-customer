@@ -1,0 +1,15 @@
+*.pyc
+*.pyo
+*.whl
+*.gz
+
+# JetBrains IDE
+.idea/
+
+# virtual env
+env/
+
+# local airflow
+airflow*
+webserver_config.py
+logs/
